@@ -16,7 +16,7 @@ $total=$pdo->query("select count(*) total from `invoices` where period='$period'
 $total=intval(intval($total[0]["total"])/100)+1;
 
 //刪除上兩行，導入以下自訂函式撈資料
-$rows=all('invoices',['period' => $period],' order by date limit ' . $start . ', 100 '); /* order by date 前要空格 */
+$rows=all('invoices',['period' => $period],' order by date limit ' . (intval($start) - 1) * 100 . ', 100 '); /* order by date 前要空格 */
 
 //測試用可刪掉了
 // foreach($rows as $row){
