@@ -11,6 +11,10 @@ $start=!empty($_GET['start'])?$_GET['start']:1;
 // $sql="select * from `invoices` where period='$period' order by date desc";
 
 // $rows=$pdo->query($sql)->fetchAll();
+
+$total=$pdo->query("select count(*) total from `invoices` where period='$period'")->fetchAll();
+$total=intval(intval($total[0]["total"])/100)+1;
+
 //刪除上兩行，導入以下自訂函式撈資料
 $rows=all('invoices',['period' => $period],' order by date limit ' . $start . ', 100 '); /* order by date 前要空格 */
 
@@ -27,11 +31,9 @@ $rows=all('invoices',['period' => $period],' order by date limit ' . $start . ',
 <li><a href="?do=invoice_list&period=4&start=1">7,8月</a></li>
 <li><a href="?do=invoice_list&period=5&start=1">9,10月</a></li>
 <li><a href="?do=invoice_list&period=6&start=1">11,12月</a></li>
+<br>
+<a href="?do=invoice_list&period=<?=$period?>&start=<?=intval($start)==1?1:intval($start)-1?>">上一頁</a>&nbsp;第<?=$start?>頁(共<?=$total?>頁)&nbsp;<a href="?do=invoice_list&period=<?=$period?>&start=<?=$start >= $total ? $start : intval($start)+1?>">下一頁</a>
 </div>
-<div class='row justify-content-around' style="list-style-type:none;padding:0">
-<a href="?do=invoice_list&period=<?=$period?>&start=<?=intval($start)==1?1:intval($start)-1?>">上一頁</a>&nbsp;第<?=$start?>頁&nbsp;<a href="?do=invoice_list&period=<?=$period?>&start=<?=intval($start)+1?>">下一頁</a>
-</div>
-
 <table class="table text-center">
     <tr>
         <td>發票號碼</td>
